@@ -104,7 +104,7 @@
                                             <div class="card border-0 p-3 shadow mb-4">
                                                 <div class="card-body">
                                                     <h3 class="border-0 fs-5 pb-2 mb-0">{{ $job->title }}</h3>
-                                                    <p>{{ Str::words($job->description, 5) }}</p>
+                                                    <p>{{ Str::words(strip_tags($job->description), 5) }}</p>
                                                     <div class="bg-light p-3 border">
                                                         <p class="mb-0">
                                                             <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
@@ -114,7 +114,7 @@
                                                             <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
                                                             <span class="ps-1">{{ $job->jobType->name }}</span>
                                                         </p>
-                                                        @if ($job->keywords !== null)
+                                                        {{-- @if ($job->keywords !== null)
                                                             <p>keywords : {{ $job->keywords }}</p>
                                                         @endif
                                                         @if ($job->category->name !== null)
@@ -122,7 +122,7 @@
                                                         @endif
                                                         @if ($job->experience !== null)
                                                             <p>experience :{{ $job->experience }}</p>
-                                                        @endif
+                                                        @endif --}}
                                                         @if ($job->salary !== null)
                                                             <p class="mb-0">
                                                                 <span class="fw-bolder"><i class="fa fa-usd"></i></span>
@@ -132,7 +132,8 @@
                                                     </div>
 
                                                     <div class="d-grid mt-3">
-                                                        <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                                        <a href=    "{{ route('jobDetails', $job->id) }}"
+                                                            class="btn btn-primary btn-lg">Details</a>
                                                     </div>
                                                 </div>
                                             </div>

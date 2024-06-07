@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Job;
+use App\Models\JobApplication;
 use App\Models\JobType;
+use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -152,7 +154,7 @@ class AccountController extends Controller
         if ($validator->passes()) {
 
             $image = $request->image;
-            $ext = $image->getClientOriginalExtension();
+            $ext = $image->getClientOriginalExtension(); // get image extension
             $image_name = $id . '-' . time() . '.' . $ext;
             $image->move(public_path('/profile_pic/'), $image_name);
 
@@ -220,10 +222,10 @@ class AccountController extends Controller
             $job->user_id = Auth::user()->id;
             $job->vacancy = $request->vacancy;
             $job->salary = $request->salary;
-            $job->location = $request->description;
-            $job->description = $request->location;
+            $job->description = $request->description;
+            $job->location = $request->location;
             $job->benefits = $request->benefits;
-            $job->responsibility = $request->experience;
+            $job->responsibility = $request->responsibility;
             $job->qualifications = $request->qualifications;
             $job->keywords = $request->keywords;
             $job->experience = $request->experience;
@@ -306,10 +308,10 @@ class AccountController extends Controller
             $job->user_id = Auth::user()->id;
             $job->vacancy = $request->vacancy;
             $job->salary = $request->salary;
-            $job->location = $request->description;
-            $job->description = $request->location;
+            $job->location = $request->location;
+            $job->description = $request->description;
             $job->benefits = $request->benefits;
-            $job->responsibility = $request->experience;
+            $job->responsibility = $request->responsibility;
             $job->qualifications = $request->qualifications;
             $job->keywords = $request->keywords;
             $job->experience = $request->experience;
@@ -350,5 +352,59 @@ class AccountController extends Controller
 
     }
 
+
+    // -------------- my job application -----------------
+
+    public function MyJobApplication()
+    {
+        $jobApplications = JobApplication::where('user_id', Auth::user()->id)->with(['job', 'job.jobType', 'job.applications'])->paginate(10);
+
+        return view('front.account.job.my-job-applications', [
+            'jobApplications' => $jobApplications
+        ]);
+    }
+
+    public function deleteJobApplication($id)
+    {
+
+        $job = JobApplication::find($id);
+        if ($job) {
+            $job->delete();
+            session()->flash('success', 'Your job deleted successfully!');
+        } else {
+            session()->flash('error', 'Job not found or already deleted.');
+        }
+
+        return redirect()->back();
+    }
+
+    // -------------- show saved jobs account page -----------------
+
+
+    public function SavedJobs()
+    {
+
+        $JobSaved = SavedJob::where('user_id', Auth::user()->id)
+            ->with(['job', 'job.jobType', 'job.applications'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('front.account.job.savedJobs', [
+            'JobSaved' => $JobSaved
+        ]);
+    }
+
+    public function DeleteSavedJobs($id)
+    {
+        $save = SavedJob::find($id);
+
+        if ($save) {
+            $save->delete();
+            session()->flash('success', 'Your job deleted successfully!');
+        } else {
+            session()->flash('error', 'Job not found or already deleted.');
+        }
+        return redirect()->back();
+    }
 
 }
