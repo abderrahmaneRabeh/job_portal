@@ -9,6 +9,8 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                             <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Users</li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </nav>
                 </div>

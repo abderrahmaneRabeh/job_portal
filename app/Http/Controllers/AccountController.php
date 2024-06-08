@@ -338,7 +338,7 @@ class AccountController extends Controller
 
     }
 
-    public function deleteJob(Request $request, $id)
+    public function deleteJob($id)
     {
         $job = Job::find($id);
 

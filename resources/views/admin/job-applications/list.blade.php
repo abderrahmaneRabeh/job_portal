@@ -9,7 +9,7 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                             <li class="breadcrumb-item active">Dashboard</li>
-                            <li class="breadcrumb-item active">Jobs</li>
+                            <li class="breadcrumb-item active">JobApplications</li>
                         </ol>
                     </nav>
                 </div>
@@ -25,39 +25,32 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="fs-4 mb-1">Jobs</h3>
+                                    <h3 class="fs-4 mb-1">JobApplications</h3>
                                 </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table ">
                                     <thead class="bg-light">
                                         <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Created By</th>
-                                            <th scope="col">status</th>
-                                            <th scope="col">Date </th>
+                                            <th scope="col">Job Title</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Employer/ Recruiter </th>
+                                            <th scope="col">Applied date</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="border-0">
-                                        @if ($jobs->isNotEmpty())
-                                            @foreach ($jobs as $job)
+                                        @if ($jobApplications->isNotEmpty())
+                                            @foreach ($jobApplications as $jobApplication)
                                                 <tr>
-                                                    <td>{{ $job->id }}</td>
+                                                    <td>{{ $jobApplication->job->title }}</td>
                                                     <td>
-                                                        <p>{{ $job->title }}</p>
-                                                        <p>applications : {{ $job->applications->count() }}</p>
+                                                        <p>{{ $jobApplication->user->name }}</p>
+                                                        {{-- <p>applications : {{ $job->applications->count() }}</p> --}}
                                                     </td>
-                                                    <td>{{ $job->user->name }}</td>
-                                                    <td>
-                                                        @if ($job->status == 1)
-                                                            <span class="badge bg-success">Active</span>
-                                                        @else
-                                                            <span class="badge bg-danger">Block</span>
-                                                        @endif
+                                                    <td>{{ $jobApplication->employer->name }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($jobApplication->applied_date)->format('d - m - Y') }}
                                                     </td>
-                                                    <td>{{ $job->created_at->diffForHumans() }}</td>
                                                     <td>
                                                         <div class="action-dots ">
                                                             <button href="#" class="btn" data-bs-toggle="dropdown"
@@ -66,11 +59,7 @@
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item"
-                                                                        href="{{ route('admin.jobs.edit', $job->id) }}"><i
-                                                                            class="fa fa-edit"
-                                                                            aria-hidden="true"></i>Edit</a></li>
-                                                                <li><a class="dropdown-item"
-                                                                        href="{{ route('admin.jobs.delete', $job->id) }}"><i
+                                                                        href="{{ route('admin.applications.delete', $jobApplication->id) }}"><i
                                                                             class="fa fa-trash" aria-hidden="true"></i>
                                                                         Remove</a></li>
                                                             </ul>
@@ -84,7 +73,7 @@
                                 </table>
                             </div>
                         </div>
-                        {{ $jobs->links() }}
+                        {{ $jobApplications->links() }}
                     </div>
 
                 </div>

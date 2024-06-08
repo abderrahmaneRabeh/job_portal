@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\JobApplicationController;
 use App\Http\Controllers\admin\JobController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
@@ -61,6 +62,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/jobs', [JobController::class, 'index'])->name('admin.jobs.list');
 
     Route::get('/jobs/edit/{id}', [JobController::class, 'edit'])->name('admin.jobs.edit');
+
+    Route::put('/jobs/Update/{id}', [JobController::class, 'Update'])->name('admin.jobs.Update');
+
+    Route::get('/jobs/delete/{id}', [JobController::class, 'delete'])->name('admin.jobs.delete');
+
+    // job application routes
+    Route::get('/job/applications', [JobApplicationController::class, 'index'])->name('admin.jobs.applications');
+
+    Route::get('/applications/delete/{id}', [JobApplicationController::class, 'delete'])->name('admin.applications.delete');
 
 
 });
